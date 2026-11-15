@@ -1,57 +1,21 @@
 DROP_BOMBS = {
+    if (!isServer) exitWith {};
 
-    if(!isserver) exitwith{};
+    params ["_targetLocation", "_incomingAngle", "_projectiles"];
+    _projectiles params [
+        "_projectileClassName", "_numberToSend", "_bombSpeed", "_speedVariance", "_spreadRadial",
+        "_minTimeBetween", "_maxRandomTime", ["_impactSpread", true], ["_source2dDistance", 3919.25]
+    ];
 
-    private _sourceHeight = 1300;
-    private _source2dDistance = 3919.25;
+    // released 1300 m up; each bomb is guided to its own point of the spread
+    private _sourceLocation = _targetLocation getPos [_source2dDistance, _incomingAngle];
+    _sourceLocation set [2, 1300 + (_targetLocation select 2)];
 
-    private _targetLocation = _this select 0;
-    private _incomingAngle = _this select 1;
-    private _projectiles = _this select 2;
-    private _projectileClassName = _projectiles select 0;
-    private _numberToSend = _projectiles select 1;
-    private _bombSpeed = _projectiles select 2;
-    private _speedVariance = _projectiles select 3;
-    private _spreadRadial = _projectiles select 4;
-    private _minTimeBetween = _projectiles select 5;
-    private _maxRandomTime  = _projectiles select 6;
-    private _applyImpactSpread = false;
-
-    if ((count _projectiles) > 7) then {
-        _applyImpactSpread = _projectiles select 7;
-    };
-
-    _source2dDistance = _projectiles param [8, _source2dDistance];
-
-    private _sourceLocation = _targetLocation getPos[_source2dDistance, _incomingAngle];
-    _sourceLocation set [2, _sourceHeight + (_targetLocation select 2)];
-
-    private "_i";
     for "_i" from 0 to _numberToSend - 1 do {
-        private _spawnLocation = _sourceLocation;
-        private _impactLocation = +_targetLocation;
-
-        if (!_applyImpactSpread) then {
-            _spawnLocation = _sourceLocation getPos[_spreadRadial * sqrt random 1, random 360];
-            _spawnLocation set [2, _sourceLocation select 2];
-        } else {
-            _impactLocation = _targetLocation getPos[_spreadRadial * sqrt random 1, random 360];
-            _impactLocation set [2, _targetLocation select 2];
-        };
-
-        _spawnLocation set [2, _sourceLocation select 2];
-
-        private _targetSourceDifference = (_impactLocation vectorDiff _spawnLocation);
-        _targetSourceDifference set [2,0];
-
-        _targetSourceDifference = vectorNormalized _targetSourceDifference;
-        private _bomb = _projectileClassName createVehicle _spawnLocation;
-        _bomb setPosASL  _spawnLocation;
-        private _angle = 180 + _incomingAngle;
-        _bomb setDir _angle;
-        private _bombSpeedWithVariance = _bombSpeed + ([-_speedVariance, _speedVariance] call BIS_fnc_randomNum);
-        private _velocity = [_bombSpeedWithVariance * (_targetSourceDifference select 0), _bombSpeedWithVariance * (_targetSourceDifference select 1),0];
-        _bomb setVelocity _velocity;
+        private _aim = [_targetLocation, _spreadRadial] call JTAC_SPREAD_POINT;
+        private _bomb = _projectileClassName createVehicle _sourceLocation;
+        _bomb setPosASL _sourceLocation;
+        [_bomb, _aim, _bombSpeed + (random (2 * _speedVariance)) - _speedVariance] call JTAC_GUIDE;
 
         sleep (_minTimeBetween + random _maxRandomTime);
     };

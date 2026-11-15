@@ -125,6 +125,7 @@ CATEGORY_TO_PRETTY_STRING = {
         case "ROCKETS": { "Rockets" };
         case "GUIDEDMISSILE": { "Guided Missile" };
         case "MINES": { "Mines" };
+        case "DRONES": { "Drones" };
         case "NONLETHAL": { "Nonlethal" };
         default { _this };
     };

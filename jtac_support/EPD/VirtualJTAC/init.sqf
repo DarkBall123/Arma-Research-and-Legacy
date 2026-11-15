@@ -6,6 +6,7 @@ if (missionNamespace getVariable ["DB_JTAC_RuntimeInitialized", false]) exitWith
 
 missionNamespace setVariable ["DB_JTAC_RuntimeInitialized", true];
 
+call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Guide.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Projectiles.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\EvenSpread.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Mines.sqf";
@@ -14,6 +15,7 @@ call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Ro
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\GuidedMissile.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\StrafingRun.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Oreshnik.sqf";
+call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Drones.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacattackparser.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacfirecontrol.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacreload.sqf";
@@ -44,7 +46,7 @@ if (!isDedicated) then {
         [
             "JTAC Support",
             "JTAC_OpenMenu",
-            ["Open JTAC Support Menu", "Открыть меню запроса поддержки JTAC"],
+            ["Open JTAC Support Menu", "Opens the JTAC support request menu"],
             {
                 if (([] call DB_fnc_jtacRefreshState) && {JtacAvailable}) then {
                     [] call JTAC_OpenMainUI;
