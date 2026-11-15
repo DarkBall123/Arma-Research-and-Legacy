@@ -204,6 +204,16 @@ class CfgAmmo {
         indirectHitRange = 380;
         dangerRadiusHit = 3200;
     };
+    class Bomb_03_F;
+    // An Oreshnik element hits like a GBU-12; the strike draws and sounds its own impact
+    class DB_JTAC_Oreshnik_Impact: Bomb_03_F {
+        model = "\A3\Weapons_F\empty.p3d";
+        explosionEffects = "";
+        craterEffects = "";
+        explosionSoundEffect = "";
+        multiSoundHit[] = {};
+        soundHit[] = {"", 0, 1};
+    };
     class ammo_Missile_Cruise_01;
     class KINJAL: ammo_Missile_Cruise_01 {
         thrust = 350;

@@ -42,8 +42,6 @@ FIRE_ORESHNIK = {
         ["cameraShakeScale", missionNamespace getVariable ["DB_JTAC_OreshnikCameraShakeScale", 1]],
         ["cameraShakeRadius", missionNamespace getVariable ["DB_JTAC_OreshnikCameraShakeRadius", 650]],
         ["damage", missionNamespace getVariable ["DB_JTAC_OreshnikDamageEnabled", true]],
-        ["damageRadius", missionNamespace getVariable ["DB_JTAC_OreshnikDamageRadius", 14]],
-        ["maxDamage", missionNamespace getVariable ["DB_JTAC_OreshnikMaxDamage", 0.7]],
         ["sound", missionNamespace getVariable ["DB_JTAC_OreshnikSoundEnabled", true]],
         ["soundScale", missionNamespace getVariable ["DB_JTAC_OreshnikSoundScale", 1]],
         ["simulateSoundDelay", missionNamespace getVariable ["DB_JTAC_OreshnikSimulateSoundDelay", true]],

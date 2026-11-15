@@ -1,3 +1,9 @@
+/*
+    Each Oreshnik element hits like a GBU-12: a charge with the damage of
+    Bomb_03_F (DB_JTAC_Oreshnik_Impact) falls into the point it lands on, so
+    a vehicle there takes a direct hit. The strike shows and sounds its own
+    impact, so the charge has neither.
+*/
 params [
     ["_impactATL", [0, 0, 0], [[]]],
     ["_settings", createHashMap, [createHashMap]]
@@ -5,19 +11,9 @@ params [
 
 if (!isServer) exitWith { false };
 
-private _radius = (_settings getOrDefault ["damageRadius", 14]) max 1;
-private _maxDamage = (_settings getOrDefault ["maxDamage", 0.7]) max 0;
-_maxDamage = _maxDamage min 0.9;
-
-private _targets = nearestObjects [_impactATL, ["CAManBase", "LandVehicle", "Air", "Ship", "StaticWeapon"], _radius, true];
-
-{
-    if (alive _x) then {
-        private _distance = (_x distance _impactATL) min _radius;
-        private _falloff = 1 - (_distance / _radius);
-        private _damageAdd = _maxDamage * _falloff;
-        _x setDamage (((damage _x) + _damageAdd) min 0.95);
-    };
-} forEach _targets;
+private _charge = createVehicle ["DB_JTAC_Oreshnik_Impact", [0, 0, 0], [], 0, "CAN_COLLIDE"];
+_charge setPosASL ((ATLToASL _impactATL) vectorAdd [0, 0, 20]);
+_charge setVectorDirAndUp [[0, 0, -1], [0, 1, 0]];
+_charge setVelocity [0, 0, -300];
 
 true;
