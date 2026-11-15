@@ -6,7 +6,6 @@ if (missionNamespace getVariable ["DB_JTAC_RuntimeInitialized", false]) exitWith
 
 missionNamespace setVariable ["DB_JTAC_RuntimeInitialized", true];
 
-call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacsettings.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Projectiles.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\EvenSpread.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Mines.sqf";
@@ -14,6 +13,7 @@ call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Bo
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Rockets.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\GuidedMissile.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\StrafingRun.sqf";
+call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\Attacks\Oreshnik.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacattackparser.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacfirecontrol.sqf";
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacreload.sqf";
@@ -23,40 +23,6 @@ call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtacmapcon
 call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\jtac_ui.sqf";
 
 call PARSE_AVAILABLE_JTAC_ATTACKS;
-
-if (isNil "DB_fnc_jtacRegisterSettings") then {
-    DB_fnc_jtacRegisterSettings = {
-        if (missionNamespace getVariable ["DB_JTAC_SettingsRegistered", false]) exitWith {};
-
-        missionNamespace setVariable ["DB_JTAC_SettingsRegistered", true];
-
-        [
-            "EPDJtacAquisitionFixedTime",
-            "SLIDER",
-            ["Global Lock Time Override", "0 keeps each strike's own acquiring time. Any value above 0 forces the same lock time for every JTAC strike."],
-            "JTAC Support",
-            [0, 60, 0, 0],
-            1,
-            {
-                missionNamespace setVariable ["EPDJtacAquisitionFixedTime", EPDJtacAquisitionFixedTime, true];
-            }
-        ] call CBA_fnc_addSetting;
-
-        [
-            "EPDJtacAquisitionGlobalModifier",
-            "SLIDER",
-            ["Global Lock Time Multiplier", "Applies when the override above is set to 0. 1.00 = original timing from jtacsettings.sqf."],
-            "JTAC Support",
-            [0.1, 10, 1, 2],
-            1,
-            {
-                missionNamespace setVariable ["EPDJtacAquisitionGlobalModifier", EPDJtacAquisitionGlobalModifier, true];
-            }
-        ] call CBA_fnc_addSetting;
-    };
-};
-
-call DB_fnc_jtacRegisterSettings;
 
 // ====================== ИНИЦИАЛИЗАЦИЯ ПЕРЕМЕННОЙ КЛАВИШИ ======================
 if (isNil "JTAC_KeyCode") then {
@@ -86,7 +52,7 @@ if (!isDedicated) then {
             },
             {},
             [JTAC_KeyCode, [false, false, false]],
-            false
+            (false)
         ] call CBA_fnc_addKeybind;
     };
 

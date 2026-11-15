@@ -1,4 +1,6 @@
-if ((isServer) and (isDedicated)) exitWith {};
+if (isDedicated) exitWith {
+    call compile preprocessFileLineNumbers "\jtac_support\EPD\VirtualJTAC\init.sqf";
+};
 
 if (isNil "DB_fnc_jtacRefreshState") then {
     DB_fnc_jtacRefreshState = {
@@ -28,7 +30,7 @@ if (isNil "DB_fnc_jtacRefreshState") then {
             player setVariable ["JTAC", _hasJtacDesignator, false];
         };
 
-        _hasJtacDesignator
+        (_hasJtacDesignator)
     };
 };
 
